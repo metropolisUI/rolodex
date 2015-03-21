@@ -2,12 +2,26 @@ body {
   background-color: #fafafa;
 }
 
-.card .member-preview img{
+.card .member-preview img {
   width: 25%;
 }
 
 .card .member-preview h4 {
   font-size: 18px;
   float: right;
+  margin: 0;
+  padding: 0;
+  line-height: normal;
 }
 
+.card .member-preview p {
+  float: right;
+  margin: 0;
+  padding: 0;
+  line-height: normal;
+}
+
+section.topics {
+  border-top: 2px solid #bdbdbd;
+  margin-top: 50px;
+}

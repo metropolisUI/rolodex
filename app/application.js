@@ -1,4 +1,5 @@
 require('lib/parseInit');
+require('lib/view_helper');
 
 // Application bootstrapper.
 var Application = {

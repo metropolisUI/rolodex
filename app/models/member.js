@@ -7,7 +7,8 @@ var Member = Parse.Object.extend({
 		firstname: null,
 		lastname: null,
 		email: null,
-		jobTitle: null
+		jobTitle: null,
+		profilePic: null
 	}
 });
 
