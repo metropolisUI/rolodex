@@ -1,7 +1,7 @@
 PROJECT NAME
 =========
 
-_A simple application for looking up members by skill type and/or job role. _
+_A simple application for looking up members by skill type and/or job role._
 
 ## Installation
 Clone down the repo to local and follow the install steps below.
@@ -14,10 +14,10 @@ Clone down the repo to local and follow the install steps below.
     * [Bower](http://bower.io): `npm install -g bower`
     * Brunch plugins and Bower dependencies: `npm install & bower install`.
 * Setup:
-    * _We use Parse.com for our backend so you will need to create a new application and install keys_
+    * _We use [Parse.com](http://parse.com) for our backend so you will need to create a new application and install keys_
     * Create a file at `app/lib/parseInit.js` and add the following code with your Parse.com application keys:
     ```js
-    Parse.initialize("uTAI2TS4OQWE6Ab90co1oyXO4kbRTvfhfgXLMf1U", "h9z9rmRrmlA47mE66lY33xvGk0f3ooPLrNKEozp5");
+    Parse.initialize("YOUR_APP_ID", "YOUR_JAVASCRIPT_KEY");
 
     module.exports = Parse;
     ```
