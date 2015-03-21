@@ -19,7 +19,7 @@ module.exports = Backbone.Router.extend({
 
 
   render: function (view) {
-    $('body').html(view.$el);
+    $('#ui-view').html(view.$el);
     return this;
   }
 
