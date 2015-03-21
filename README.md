@@ -1,8 +1,7 @@
-# Brunch with Banana Pancakes
+PROJECT NAME
+=========
 
-![](http://i.imgur.com/CXAc2.png)
-
-Banana Pancakes is a [Brunch](http://brunch.io/) skeleton that utilizes [Bootstrap](http://getbootstrap.com/), [Backbone](http://backbonejs.org/), [Handlebars](http://handlebarsjs.com/), and [LESS](http://lesscss.org/) / [SASS](http://sass-lang.com/). It also includes [Backbone.Mediator](https://github.com/chalbert/Backbone-Mediator) for Pub/Sub patterns.
+_A simple application for looking up members by skill type and/or job role. _
 
 ## Installation
 Create your project using Banana Pancakes with `brunch new github:Anaphase/brunch-banana-pancakes <your-project-name>`.
@@ -24,17 +23,22 @@ Or simply copy the repository to your hard drive and rename it.
     * Place static files you want to be copied from `app/assets/` to `public/`.
     * [Brunch site](http://brunch.io), [Backbone site](http://backbonejs.org/)
 
-## Customize Bootstrap Stylesheets
 
-All Bootstrap stylesheet files can be found separated into:
+## Contributing
+Please consider the github issues and the wiki page for ideas, before submitting pull requests with patches and new features. If your going to submit code please also see the [coding style guide](https://github.com/airbnb/javascript)
 
-	vendor/styles/bootstrap
-		
-They're in original [LESS](http://lesscss.org/) format in order to be easily customized, and compiled together with the app build.
+There are many ways you can contribute to the project:
 
-## Exclude Bootstrap jQuery plugins
+- Fix a bug or implement a new feature.
+- Write an extension and tell us about it!
+- Test and report bugs you find.
+- Write unit tests.
+- Translate Project into other languages (and help keep those translations up to date).
+- Write documentation and help keep it up to date (please see wiki for examples).
 
-jQuery plugins used by Bootstrap are all listed (in the right order) inside the config.coffee file. Comment out the ones you want to exclude from the build with a #. (Pay attention to dependencies!)
+## Testing
+running `grunt test` will run the unit tests.
 
-## Credit
-Banana Pancakes was spawned from [Brunch with Eggs and Bacon](https://github.com/nezoomie/brunch-eggs-and-bacon) because it's versions of [jQuery](http://jquery.com/), [Underscore](http://underscorejs.org/), [Backbone](http://backbonejs.org/), and [Bootstrap](http://getbootstrap.com/) were all out-of-date.
+## Project Team
+* Chad Drummond
+* Trenton Kennedy
