@@ -4,9 +4,7 @@ PROJECT NAME
 _A simple application for looking up members by skill type and/or job role. _
 
 ## Installation
-Create your project using Banana Pancakes with `brunch new github:Anaphase/brunch-banana-pancakes <your-project-name>`.
-
-Or simply copy the repository to your hard drive and rename it.
+Clone down the repo to local and follow the install steps below.
 
 ## Getting started
 
@@ -15,8 +13,16 @@ Or simply copy the repository to your hard drive and rename it.
     * [Brunch](http://brunch.io): `npm install -g brunch`
     * [Bower](http://bower.io): `npm install -g bower`
     * Brunch plugins and Bower dependencies: `npm install & bower install`.
+* Setup:
+    * _We use Parse.com for our backend so you will need to create a new application and install keys_
+    * Create a file at `app/lib/parseInit.js` and add the following code with your Parse.com application keys:
+    ```js
+    Parse.initialize("uTAI2TS4OQWE6Ab90co1oyXO4kbRTvfhfgXLMf1U", "h9z9rmRrmlA47mE66lY33xvGk0f3ooPLrNKEozp5");
+
+    module.exports = Parse;
+    ```
 * Run:
-    * `brunch watch --server` — watches the project with continuous rebuild. This will also launch HTTP server with [pushState](https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history).
+    * `brunch watch -s` — watches the project with continuous rebuild. This will also launch HTTP server with [pushState](https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history).
     * `brunch build --production` — builds minified project for production
 * Learn:
     * `public/` dir is fully auto-generated and served by HTTP server.  Write your code in `app/` dir.
@@ -40,5 +46,5 @@ There are many ways you can contribute to the project:
 running `grunt test` will run the unit tests.
 
 ## Project Team
-* Chad Drummond
-* Trenton Kennedy
+* Chad Drummond ([@chadwithuhc](https://github.com/chadwithuhc))
+* Trenton Kennedy ([@trentontri](https://github.com/trentontri))
