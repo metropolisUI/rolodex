@@ -1,6 +1,6 @@
-var application = require('application')
+var application = require('application');
 
-$(function() {
-    application.initialize()
-    Backbone.history.start()
-})
+$(function () {
+  application.initialize();
+  Backbone.history.start()
+});
