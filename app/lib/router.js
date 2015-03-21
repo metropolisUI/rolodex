@@ -1,11 +1,26 @@
 var application = require('application');
 
+var TopicView = require('views/topicView');
+
 module.exports = Backbone.Router.extend({
   routes: {
-    '': 'home'
+    '': 'home',
+    'topic': 'topic'
   },
 
   home: function () {
-    $('body').html(application.homeView.render().el)
+    this.render(application.homeView.render());
+  },
+
+  topic: function () {
+    this.render(new TopicView());
+  },
+
+
+
+  render: function (view) {
+    $('body').html(view.$el);
+    return this;
   }
+
 });
