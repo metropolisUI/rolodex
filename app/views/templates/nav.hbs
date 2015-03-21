@@ -1,0 +1,13 @@
+<nav>
+  <div class="nav-wrapper blue-grey darken-1">
+    <a href="#" class="brand-logo right">Members Directory</a>
+    <ul id="nav-mobile" class="left">
+      {{#if user}}
+        <li><a href="#profile">Logged in as: {{ user.name }}</a></li>
+      {{else}}
+        <li><a href="#login">Login</a></li>
+      {{/if}}
+      <li><a href="#topic">Topics</a></li>
+    </ul>
+  </div>
+</nav>

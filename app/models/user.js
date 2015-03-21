@@ -29,6 +29,29 @@ var User = {
     });
   },
 
+  login: function (email, password) {
+    return Parse.User.logIn(email, password, {
+      success: function (user) {
+        var app = require('application');
+
+        Backbone.Mediator.pub('change:user');
+        app.router.navigate('', {trigger:true});
+      },
+      error: function(user, error) {
+        // Show the error message somewhere and let the user try again.
+        alert("Error: " + error.code + " " + error.message);
+      }
+    });
+  },
+
+  logout: function () {
+    var app = require('application');
+
+    Parse.User.logOut();
+    Backbone.Mediator.pub('change:user');
+    app.router.navigate('', {trigger:true});
+  },
+
   all: function () {
     var query = new Parse.Query(Parse.User);
     return query.find().then(function (users) {
