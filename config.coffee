@@ -27,7 +27,7 @@ exports.config =
         ]
          
     stylesheets:
-      defaultExtension: 'less'
+      defaultExtension: 'scss'
       joinTo: 
         'stylesheets/app.css': /^(app|vendor)/
         'test/stylesheets/test.css': /^test/

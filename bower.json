@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "main": "public/javascripts/app.js",
   "dependencies": {
-    "console-polyfill": "latest",
     "lodash": "latest",
     "jquery": "latest",
     "backbone": "latest",
