@@ -1,5 +1,6 @@
 var application = require('application');
 
+var HomeView = require('views/homeView');
 var TopicView = require('views/topicView');
 var SignupView = require('views/signupView');
 
@@ -11,7 +12,7 @@ module.exports = Backbone.Router.extend({
   },
 
   home: function () {
-    this.render(application.homeView.render());
+    this.render(new HomeView());
   },
 
   topic: function () {

@@ -1,19 +1,11 @@
 require('lib/parseInit');
-require('lib/view_helper');
 
 // Application bootstrapper.
-var Application = {
+var Application = _.extend({
   initialize: function () {
-
-    var HomeView = require('views/home_view'),
-      Router = require('lib/router');
-
-    this.homeView = new HomeView();
+    var Router = require('router');
     this.router = new Router();
-
-    if (typeof Object.freeze === 'function') Object.freeze(this);
-
   }
-};
+}, Backbone.Events);
 
 module.exports = Application;

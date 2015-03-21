@@ -43,7 +43,7 @@ There are many ways you can contribute to the project:
 - Write documentation and help keep it up to date (please see wiki for examples).
 
 ## Testing
-running `grunt test` will run the unit tests.
+Running `grunt test` will run the unit tests.
 
 ## Project Team
 * Chad Drummond ([@chadwithuhc](https://github.com/chadwithuhc))
