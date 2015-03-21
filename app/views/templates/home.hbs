@@ -19,49 +19,13 @@
     </div>
     <div class="row">
 
-        <div class="col m3">
-            {{include "member"}}
-        </div>
-
-        <div class="col m3">
-            <div class="card">
-                <div class="card-image waves-effect waves-block waves-light">
-                    <img class="activator" src="images/trenton.jpeg">
-                </div>
-                <div class="card-content">
-                    <span class="card-title activator grey-text text-darken-4">Trenton Kennedy <i
-                            class="mdi-navigation-more-vert right"></i></span>
-
-                    <p>UI Developer</p>
-                    <a href='#'>read more...</a>
-                </div>
-                <div class="card-reveal">
-                    <span class="card-title grey-text text-darken-4">Trenton Kennedy <i
-                            class="mdi-navigation-close right"></i></span>
-
-                    <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col m3">
-            <div class="card">
-                <div class="card-image waves-effect waves-block waves-light">
-                    <img class="activator" src="images/chad.png">
-                </div>
-                <div class="card-content">
-                    <span class="card-title activator grey-text text-darken-4">Chad Drummond<i class="mdi-navigation-more-vert right"></i></span>
-
-                    <p>Senior UI Developer</p>
-                    <a href='#'>read more...</a>
-                </div>
-                <div class="card-reveal">
-                    <span class="card-title grey-text text-darken-4">Chad Drummond <i
-                            class="mdi-navigation-close right"></i></span>
-
-                    <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                </div>
-            </div>
-        </div>
+        {{#each users}}
+          <div class="col m3">
+            {{include "member" this}}
+          </div>
+        {{else}}
+          <h2>No Members, bro!</h2>
+        {{/each}}
 
     </div>
 

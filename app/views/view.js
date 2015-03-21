@@ -7,6 +7,7 @@ module.exports = Backbone.View.extend({
 
   initialize: function () {
     this.render = _.bind(this.render, this);
+    this.render();
   },
 
   template: function () {
