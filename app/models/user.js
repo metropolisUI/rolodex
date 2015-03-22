@@ -20,6 +20,9 @@ var User = {
 
     user.signUp(null, {
       success: function(user) {
+        var app = require('application');
+
+        Backbone.Mediator.pub('change:user');
         app.router.navigate('', {trigger:true});
       },
       error: function(user, error) {
