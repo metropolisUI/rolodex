@@ -23,7 +23,7 @@ var User = {
         var app = require('application');
 
         Backbone.Mediator.pub('change:user');
-        app.router.navigate('#profile', {trigger:true});
+        app.router.navigate('#profile/' + user.id, {trigger:true});
       },
       error: function(user, error) {
         // Show the error message somewhere and let the user try again.
