@@ -1,4 +1,4 @@
-PROJECT NAME
+Members Directory
 =========
 
 _A simple application for looking up members by skill type and/or job role._
