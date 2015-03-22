@@ -3,7 +3,7 @@
     <a href="#" class="brand-logo right">Members Directory</a>
     <ul id="nav-mobile" class="left">
       {{#if user}}
-        <li><a href="#profile">Logged in as: {{ user.name }}</a></li>
+        <li><a href="#profile/{{ user.objectId }}">Logged in as: {{ user.name }}</a></li>
       {{else}}
         <li><a href="#login">Login</a></li>
       {{/if}}

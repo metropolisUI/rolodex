@@ -39,7 +39,7 @@ module.exports = Backbone.Router.extend({
     User.logout();
   },
 
-  profile: function () {
+  profile: function (id) {
 	this.render(new ProfileView({userId: id}));
   },
 
