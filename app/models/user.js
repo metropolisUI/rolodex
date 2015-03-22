@@ -23,7 +23,7 @@ var User = {
         var app = require('application');
 
         Backbone.Mediator.pub('change:user');
-        app.router.navigate('', {trigger:true});
+        app.router.navigate('#profile', {trigger:true});
       },
       error: function(user, error) {
         // Show the error message somewhere and let the user try again.
@@ -64,7 +64,17 @@ var User = {
 
   gravatarUrl: function (email, size) {
     return 'http://www.gravatar.com/avatar/' + md5(email) + '?d=retro' + (size ? '&s=' + size : '');
-  }
+  },
+
+	find: function(id) {
+		var query = new Parse.Query(Parse.User);
+		return query.equalTo("objectId", id).find().then(function (user){
+			if (user) {
+				return user[0];
+			}
+			return user;
+		});
+	}
 };
 
 module.exports = User;

@@ -15,7 +15,7 @@ module.exports = Backbone.Router.extend({
     'register': 'register',
     'login': 'login',
     'logout': 'logout',
-    'profile': 'profile',
+    'profile/:id': 'profile',
     'skills': 'skills',
   },
 
@@ -40,7 +40,7 @@ module.exports = Backbone.Router.extend({
   },
 
   profile: function () {
-    this.render(new ProfileView());
+	this.render(new ProfileView({userId: id}));
   },
 
   skills: function () {
