@@ -24,6 +24,16 @@ module.exports = View.extend({
   },
 
 	afterRender: function() {
+
+		$(function(){
+				$('.skill-text').on('click', function (e) {
+					e.preventDefault();
+					var text = $(this).text();
+					var inputVal = $('#search-bar');
+					inputVal.val(text);
+				});
+		});
+
 		var searchResults = [],
 				userData = this.data.users;
 
@@ -49,17 +59,7 @@ module.exports = View.extend({
 		$('.typeahead').typeahead({
 					highlight: true,
 					minLength: 1,
-					name: 'members',
-					templates: {
-						empty: [
-							'<div class="empty-message">',
-							'unable to find any Best Picture winners that match the current query',
-							'</div>'
-						].join('\n'),
-						suggestion: function(data){
-							return '<p>' + data + '</p>';
-						}
-					}
+					name: 'members'
 				},
 				{
 					displayKey: 'value',
