@@ -1,14 +1,21 @@
 <nav>
   <div class="nav-wrapper blue-grey darken-1">
-    <a href="#" class="brand-logo right">Members Directory</a>
+    <a href="#" class="brand-logo center">Members Directory</a>
     <ul id="nav-mobile" class="left">
+      {{#if user}}
+        <li><a href="#topic">Topics</a></li>
+        <li><a href="#skills">Skills</a></li>
+      {{else}}
+        <li><a href="#register">Register</a></li>
+      {{/if}}
+    </ul>
+    <ul id="nav-mobile" class="right">
       {{#if user}}
         <li><a href="#profile/{{ user.objectId }}" class="blue lighten-2">Logged in as: {{ user.name }}</a></li>
         <li><a href="#logout" class="red lighten-1">Logout</a></li>
       {{else}}
         <li><a href="#login">Login</a></li>
       {{/if}}
-      <li><a href="#topic">Topics</a></li>
     </ul>
   </div>
 </nav>
