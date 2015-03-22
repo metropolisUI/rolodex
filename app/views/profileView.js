@@ -33,6 +33,14 @@ module.exports = View.extend({
     promise.then(function () {
       this.render();
     }.bind(this));
+	},
+	editProfile: function (e){
+		e.preventDefault ();
+		$ ('a.edit-profile').text ('save edits');
+		$ ('label.name-label').hide ();
+		$ ('input.edit-name').show ();
+		$ ('input.edit-title').show ();
+		$ ('label.title-label').hide ();
 	}
 
 });

@@ -8,15 +8,23 @@
             <div class="col s8">
                 {{#if isOwner}}
                 <p class="profile-settings">
-                    <a class="edit-profile" href=""><i class="mdi-image-edit"></i> edit profile </a>
+                    <a class="edit-profile" href="#"><i class="mdi-image-edit"></i>edit profile</a>
                     <a href="#logout">logout</a>
                 </p>
                 {{/if}}
-                <h4><i class="mdi-action-perm-identity"></i> {{ user.name }}</h4>
+                <h4>
+                    <i class="mdi-action-perm-identity"></i>
+                    <input class="edit-name" type="text" placeholder="{{user.name}}"/>
+                    <label class="name-label">  {{ user.name }} </label>
+                </h4>
 
                 <p><i class="mdi-communication-email"></i> {{ user.email }}</p>
 
-                <p><i class="mdi-action-star-rate"></i> {{ user.jobTitle }}</p>
+                <p>
+                    <i class="mdi-action-star-rate"></i>
+                    <input class="edit-title" type="text" placeholder="{{ user.jobTitle }}"/>
+                    <label class="title-label">{{ user.jobTitle }} </label>
+                </p>
             </div>
         </div>
 
