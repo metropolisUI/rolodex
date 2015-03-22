@@ -6,6 +6,9 @@ var User = require('models/user');
 module.exports = View.extend({
   id: 'profile-view',
   template: template,
+	events: {
+		'click .edit-profile': 'edit'
+	},
 
 	initialize: function(options){
 		this.data = options;
