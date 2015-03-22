@@ -50,7 +50,13 @@ module.exports = Backbone.Router.extend({
 
   // Common functions
   render: function (view) {
+    if (this.currentView) {
+      this.currentView.remove();
+    }
+
     $('#ui-view').html(view.$el);
+    this.currentView = view;
+
     return this;
   }
 
