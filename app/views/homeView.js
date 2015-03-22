@@ -47,14 +47,24 @@ module.exports = View.extend({
 		};
 
 		$('.typeahead').typeahead({
-        hint: true,
-        highlight: true,
-        minLength: 1
-      },
-      {
-        displayKey: 'value',
-        source: substringMatcher(searchResults)
-      });
+					highlight: true,
+					minLength: 1,
+					name: 'members',
+					templates: {
+						empty: [
+							'<div class="empty-message">',
+							'unable to find any Best Picture winners that match the current query',
+							'</div>'
+						].join('\n'),
+						suggestion: function(data){
+							return '<p>' + data + '</p>';
+						}
+					}
+				},
+				{
+					displayKey: 'value',
+					source: substringMatcher(searchResults)
+				});
 	}
 
 });
