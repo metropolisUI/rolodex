@@ -8,7 +8,7 @@ module.exports = View.extend({
   id: 'profile-view',
   template: template,
 	events: {
-		'click .edit-profile': 'edit'
+		'click .edit-profile': 'editProfile'
 	},
 
 	initialize: function(options){
