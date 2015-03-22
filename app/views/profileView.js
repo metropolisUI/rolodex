@@ -12,7 +12,7 @@ module.exports = View.extend({
 		User.find(this.data.userId).then(function(user){
 			if (user) {
 				this.data.user = user.toJSON();
-				this.data.isOwner = (Parse.User.current() && user.objectId === Parse.User.current().objectId);
+				this.data.isOwner = (Parse.User.current() && this.data.userId === Parse.User.current().id);
 			}
 
 			this.render();
