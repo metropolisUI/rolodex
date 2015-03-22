@@ -10,7 +10,7 @@ var Competencies = Parse.Collection.extend({
   model: Competency
 });
 
-// Static definitions for now
+// Static definitions for now stupid
 module.exports = new Competencies([
   new Competency({ name: 'Junior', abbr: 'Jr' }),
   new Competency({ name: 'Mid', abbr: 'Mid' }),
