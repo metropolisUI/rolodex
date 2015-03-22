@@ -15,7 +15,7 @@
       <div class="row">
         <div class="input-field col s6">
           <label for="topic">Topic</label>
-          <select id="topic">
+          <select id="topic" required>
             <option value="" disabled selected>Choose your option</option>
             {{#each topics }}
             <option value="{{ this.objectId }}">{{ this.name }}</option>
@@ -24,7 +24,7 @@
         </div>
         <div class="input-field col s6">
           <label for="competency">Competency</label>
-          <select id="competency">
+          <select id="competency" required>
             <option value="" disabled selected>Choose your competency</option>
             {{#each competencies }}
             <option value="{{ this.abbr }}">{{ this.name }}</option>
@@ -41,7 +41,7 @@
   </div>
 
   <div class="buttons">
-    <a class="waves-effect waves-light btn" href="#">Home</a>
+    <a class="waves-effect waves-light btn" href="#profile/{{ user.objectId }}">Back to Profile</a>
   </div>
 	
 </div>

@@ -10,15 +10,13 @@ module.exports = View.extend({
   template: template,
 
   initialize: function () {
-    var promises = [];
+    // WARNING: Automatically adding skills to current logged in user
+    this.data.user = Parse.User.current();
 
-    promises.push(topics.fetch().then(function (topics) {
+    topics.availableForUser(this.data.user).then(function (topics) {
+      this.data.competencies = competencies.toJSON();
+      this.data.topicsCollection = topics;
       this.data.topics = topics.toJSON();
-    }.bind(this)));
-
-    this.data.competencies = competencies.toJSON();
-
-    Parse.Promise.when(promises).then(function () {
       this.render();
     }.bind(this));
   },
@@ -26,24 +24,28 @@ module.exports = View.extend({
   onSubmit: function (e) {
     e.preventDefault();
 
-    var topic = topics.get(this.$topicInput.val());
+    var topic = this.data.topicsCollection.get(this.$topicInput.val());
 
     var skill = skills.instance({});
     skill.set('topic', topic);
     skill.set('competency', this.$competencyInput.val());
-    skill.set('user', Parse.User.current());
+    skill.set('user', this.data.user);
     skill.save();
 
     this.data.alert = 'Skill Saved!';
+    // Remove latest added skill from dropdown
+    this.data.topics = this.data.topics.filter(function (model) {
+      return model.objectId !== topic.id;
+    });
     this.render();
   },
 
   afterRender: function () {
-    this.$topicInput = this.$el.find('#topic');
+    this.$topicInput = this.$('#topic');
     this.$topicInput.material_select();
-    this.$competencyInput = this.$el.find('#competency');
+    this.$competencyInput = this.$('#competency');
     this.$competencyInput.material_select();
-    this.$form = this.$el.find('form');
+    this.$form = this.$('form');
     this.$form.on('submit', function (e) {
       this.onSubmit(e);
     }.bind(this));
