@@ -34,8 +34,6 @@ module.exports = View.extend({
     skill.set('user', Parse.User.current());
     skill.save();
 
-    debugger;
-
     this.data.alert = 'Skill Saved!';
     this.render();
   },
