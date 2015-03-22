@@ -57,6 +57,10 @@ var User = {
     return query.find().then(function (users) {
       return new Parse.Collection(users);
     });
+  },
+
+  gravatarUrl: function (email, size) {
+    return 'http://www.gravatar.com/avatar/' + md5(email) + '?d=retro' + (size ? '&s=' + size : '');
   }
 };
 
