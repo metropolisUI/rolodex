@@ -12,6 +12,11 @@ module.exports = View.extend({
   initialize: function () {
     // WARNING: Automatically adding skills to current logged in user
     this.data.userObject = Parse.User.current();
+
+    // If not logged in, you can't access this page
+    if (!this.data.userObject) {
+      app.router.navigate('', {trigger:true});
+    }
     this.data.user = this.data.userObject.toJSON();
 
     topics.availableForUser(this.data.userObject).then(function (topics) {

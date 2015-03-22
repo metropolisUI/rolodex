@@ -22,7 +22,7 @@
 
         <div class="row">
             <section class="skills-section">
-              <h4>Member Skills <a class="btn-floating btn-small waves-effect waves-light red" href="#/skills"><i class="mdi-content-add"></i></a></h4>
+              <h4>Member Skills {{#if isOwner}}<a class="btn-floating btn-small waves-effect waves-light red" href="#/skills"><i class="mdi-content-add"></i></a>{{/if}}</h4>
               <ul>
               {{#each skills}}
                 <li>{{ this.topic.name }} ({{ this.competency.name }})</li>
