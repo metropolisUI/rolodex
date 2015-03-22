@@ -6,6 +6,7 @@ var TopicView = require('views/topicView');
 var SignupView = require('views/signupView');
 var LoginView = require('views/loginView');
 var ProfileView = require('views/profileView');
+var SkillsView = require('views/skillsView');
 
 module.exports = Backbone.Router.extend({
   routes: {
@@ -15,6 +16,7 @@ module.exports = Backbone.Router.extend({
     'login': 'login',
     'logout': 'logout',
     'profile': 'profile',
+    'skills': 'skills',
   },
 
   home: function () {
@@ -39,6 +41,10 @@ module.exports = Backbone.Router.extend({
 
   profile: function () {
     this.render(new ProfileView());
+  },
+
+  skills: function () {
+    this.render(new SkillsView());
   },
 
 

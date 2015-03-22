@@ -1,6 +1,3 @@
-var topics = require('models/topics');
-var competencies = require('models/competencies');
-
 var Skill = Parse.Object.extend({
   className: 'Skill',
   defaults: {
@@ -12,11 +9,9 @@ var Skill = Parse.Object.extend({
 
 var Skills = Parse.Collection.extend({
   model: Skill,
-  getTopic: function () {
-    return topics;
-  },
-  getCompetency: function () {
-    return competencies;
+
+  instance: function (data) {
+    return new Skill(data);
   }
 });
 
