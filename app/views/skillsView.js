@@ -11,9 +11,10 @@ module.exports = View.extend({
 
   initialize: function () {
     // WARNING: Automatically adding skills to current logged in user
-    this.data.user = Parse.User.current();
+    this.data.userObject = Parse.User.current();
+    this.data.user = this.data.userObject.toJSON();
 
-    topics.availableForUser(this.data.user).then(function (topics) {
+    topics.availableForUser(this.data.userObject).then(function (topics) {
       this.data.competencies = competencies.toJSON();
       this.data.topicsCollection = topics;
       this.data.topics = topics.toJSON();
@@ -29,7 +30,7 @@ module.exports = View.extend({
     var skill = skills.instance({});
     skill.set('topic', topic);
     skill.set('competency', this.$competencyInput.val());
-    skill.set('user', this.data.user);
+    skill.set('user', this.data.userObject);
     skill.save();
 
     this.data.alert = 'Skill Saved!';
