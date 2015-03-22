@@ -63,3 +63,23 @@ nav {
   border-top: 2px solid #bdbdbd;
   margin-top: 50px;
 }
+
+input.edit-name {
+  display: none;
+  width: 55%;
+}
+
+label.name-label {
+  font-size: 2.28rem;
+  color: #212121;
+}
+
+label.title-label {
+  font-size: 16px;
+  color: #212121;
+}
+
+input.edit-title {
+  display: none;
+  width: 55%;
+}
