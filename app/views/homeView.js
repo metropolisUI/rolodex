@@ -9,20 +9,18 @@ module.exports = View.extend({
 
   initialize: function () {
     var promises = [];
+
     promises.push(topics.fetch().then(function (results) {
       this.data.topics = results.toJSON();
     }.bind(this)));
 
     promises.push(User.all().then(function (users) {
       this.data.users = users.toJSON();
-
     }.bind(this)));
 
     Parse.Promise.when(promises).then(function () {
-
 	    this.render();
     }.bind(this));
-
   },
 
 	afterRender: function() {
@@ -49,14 +47,14 @@ module.exports = View.extend({
 		};
 
 		$('.typeahead').typeahead({
-					hint: true,
-					highlight: true,
-					minLength: 1
-				},
-				{
-					displayKey: 'value',
-					source: substringMatcher(searchResults)
-				});
+        hint: true,
+        highlight: true,
+        minLength: 1
+      },
+      {
+        displayKey: 'value',
+        source: substringMatcher(searchResults)
+      });
 	}
 
 });

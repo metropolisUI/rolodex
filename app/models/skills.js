@@ -57,6 +57,10 @@ var Skills = Parse.Collection.extend({
     return new Skill(data);
   },
 
+  comparator: function (obj) {
+    return obj.get('topic').get('name');
+  },
+
   forUser: function (user) {
     var query = new Parse.Query(Skill);
     return query.equalTo('user', user).include('topic').include('user').find().then(function (results) {

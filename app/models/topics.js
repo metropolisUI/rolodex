@@ -14,8 +14,8 @@ var Topics = Parse.Collection.extend({
     return new Topic(data);
   },
 
-  comparator: function (a, b) {
-    return a.get('name') > b.get('name');
+  comparator: function (obj) {
+    return obj.get('name');
   },
 
   availableForUser: function (user) {
