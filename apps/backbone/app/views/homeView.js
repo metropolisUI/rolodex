@@ -23,16 +23,39 @@ module.exports = View.extend({
     }.bind(this));
   },
 
+
 	afterRender: function() {
 
-		$(function(){
-				$('.skill-text').on('click', function (e) {
-					e.preventDefault();
-					var text = $(this).text();
-					var inputVal = $('#search-bar');
-					inputVal.val(text);
-				});
+		var memberResults = $('#member-results');
+		var skillResults = $('#skill-results');
+		var roleResults = $('#role-results');
+
+
+		$("input:checkbox[id^=checkMembers]").click(function() {
+			if ($(this).is(':checked')) {
+				memberResults.show();
+			} else {
+				memberResults.hide();
+			}
 		});
+
+		$("input:checkbox[id^=checkSkills]").click(function() {
+			if ($(this).is(':checked')) {
+				skillResults.show();
+			} else {
+				skillResults.hide();
+			}
+		});
+		$("input:checkbox[id^=checkRoles]").click(function() {
+			if ($(this).is(':checked')) {
+				roleResults.show();
+			} else {
+				roleResults.hide();
+			}
+		});
+
+
+
 
 		var searchResults = [],
 				userData = this.data.users;
