@@ -30,18 +30,6 @@ nav {
   background-color: #e0e0e0;
 }
 
-.member-search {
-  margin-top: 0;
-}
-
-.member-search i {
-  font-size: 24px;
-  padding-left: 10px;
-}
-
-.member-search .input-field {
-  padding-left: 20px;
-}
 .search-filters .btn-large {
   margin-top: 5px;
 }
@@ -149,4 +137,61 @@ ul.skill-types {
 
 .card .card-title {
   font-size: 20px;
+}
+
+#home-view .main-content {
+  margin-top: 100px;
+}
+
+#home-search a.btn-large {
+  margin-bottom: 0;
+  height: 65px;
+  margin-left: 5px;
+  vertical-align: top;
+}
+
+
+#home-search {
+  width: 75%;
+  margin: auto;
+}
+
+#home-search nav {
+  width: 80%;
+  display: inline-block;
+}
+
+.member-search {
+  margin-top: 0;
+}
+
+#home-search i {
+  font-size: 32px;
+  vertical-align: -webkit-baseline-middle;
+}
+
+.member-search .input-field {
+  padding-left: 20px;
+}
+
+h4.category-title {
+  text-align: center;
+  color: #bdbdbd;
+  font-weight: 300;
+}
+
+.search-filters {
+  width: 75%;
+  margin: auto;
+}
+
+.search-filters p {
+  display: inline-block;
+}
+
+.search-filters > p {
+  margin-right: 25px;
+}
+.search-filters label {
+  margin-right: 15px;
 }

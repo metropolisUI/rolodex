@@ -68,3 +68,9 @@ module.exports = View.extend({
 	}
 
 });
+
+
+//TODO:
+// on input focus hide content
+// on input search show dropdown of likely results
+// on enter or button press populate content results
