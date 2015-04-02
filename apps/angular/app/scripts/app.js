@@ -22,13 +22,22 @@ angular
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html',
+        templateUrl: 'views/home.html',
         controller: 'MainCtrl'
       })
-      .when('/about', {
-        templateUrl: 'views/about.html',
+      .when('/topic', {
+        templateUrl: 'views/topic.html',
         controller: 'AboutCtrl'
       })
+	    .when('/register', {
+		    templateUrl: 'views/signup.html'
+	    })
+	    .when('/login', {
+			    templateUrl: 'views/login.html'
+	    })
+	    .when('/profile',{
+		    templateUrl: 'views/profile.html'
+	    })
       .otherwise({
         redirectTo: '/'
       });

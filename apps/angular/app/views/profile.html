@@ -1,0 +1,42 @@
+{{#if user}}
+<div class="container profile-detail">
+    <div class="card">
+        <div class="row">
+            <div class="col s3">
+                <img src="{{gravatarUrl user.email '200'}}"/>
+            </div>
+            <div class="col s8">
+                {{#if isOwner}}
+                <p class="profile-settings">
+                    <a class="edit-profile" href="#"><i class="mdi-image-edit"></i>edit profile</a>
+                </p>
+                {{/if}}
+                <h4>
+                    <i class="mdi-action-perm-identity"></i>
+                    <input class="edit-name" type="text" placeholder="{{user.name}}"/>
+                    <label class="name-label">  {{ user.name }} </label>
+                </h4>
+
+                <p><i class="mdi-communication-email"></i> {{ user.email }}</p>
+
+                <p>
+                    <i class="mdi-action-star-rate"></i>
+                    <input class="edit-title" type="text" placeholder="{{ user.jobTitle }}"/>
+                    <label class="title-label">{{ user.jobTitle }} </label>
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <section class="skills-section">
+                <h4>Member Skills {{#if isOwner}}<a class="btn-floating btn-small waves-effect waves-light red" href="#/skills"><i class="mdi-content-add"></i></a>{{/if}}</h4>
+                <ul>
+                    {{#each skills}}
+                    <li>{{ this.topic.name }} ({{ this.competency.name }})</li>
+                    {{/each}}
+                </ul>
+            </section>
+        </div>
+    </div>
+</div>
+{{/if}}
