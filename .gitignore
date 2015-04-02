@@ -9,7 +9,7 @@
 *.vi
 *~
 *.sass-cache
-.idea
+.htaccess
 
 # OS or Editor folders
 .DS_Store
@@ -24,11 +24,13 @@ Thumbs.db
 # NPM packages folder.
 node_modules/
 
-# Brunch folder for temporary files.
+# temporary files for development.
 tmp/
+.tmp/
 
 # Brunch output folder.
 public/
+dist/
 
 # Bower stuff.
 bower_components/
