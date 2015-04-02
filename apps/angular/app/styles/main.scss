@@ -1,90 +1,236 @@
-// bower:scss
-// endbower
+@charset "UTF-8";
 
-.browsehappy {
-  margin: 0.2em 0;
-  background: #ccc;
-  color: #000;
-  padding: 0.2em 0;
-}
+// Mixins
+@import "components/prefixer";
+@import "components/mixins";
+@import "components/color";
 
-/* Space out content a bit */
+// Variables;
+@import "components/variables";
+
+// Reset
+@import "components/normalize";
+
+// components
+@import "components/global";
+@import "components/icons-material-design";
+@import "components/grid";
+@import "components/navbar";
+@import "components/roboto";
+@import "components/typography";
+@import "components/cards";
+@import "components/toast";
+@import "components/tabs";
+@import "components/tooltip";
+@import "components/buttons";
+@import "components/dropdown";
+@import "components/waves";
+@import "components/modal";
+@import "components/collapsible";
+@import "components/materialbox";
+@import "components/form";
+@import "components/table_of_contents";
+@import "components/sideNav";
+@import "components/preloader";
+@import "components/slider";
+@import "components/date_picker/default";
+@import "components/date_picker/default.date";
+@import "components/date_picker/default.time";
+
 body {
-  padding-top: 20px;
-  padding-bottom: 20px;
+  background-color: #fafafa;
 }
 
-/* Everything but the jumbotron gets side spacing for mobile first views */
-.header,
-.marketing,
-.footer {
-  padding-left: 15px;
-  padding-right: 15px;
+.card .member-preview img {
+  width: 25%;
 }
 
-/* Custom page header */
-.header {
-  border-bottom: 1px solid #e5e5e5;
-
-  /* Make the masthead heading the same height as the navigation */
-  h3 {
-    margin-top: 0;
-    margin-bottom: 0;
-    line-height: 40px;
-    padding-bottom: 19px;
-  }
+.card .member-preview h4 {
+  font-size: 18px;
+  float: right;
+  margin: 0;
+  padding: 0;
+  line-height: normal;
 }
 
-/* Custom page footer */
-.footer {
-  padding-top: 19px;
-  color: #777;
-  border-top: 1px solid #e5e5e5;
+.card .member-preview p {
+  float: right;
+  margin: 0;
+  padding: 0;
+  line-height: normal;
 }
 
-.container-narrow > hr {
-  margin: 30px 0;
+section.topics {
+  border-top: 2px solid #bdbdbd;
+  margin-top: 50px;
 }
 
-/* Main marketing message and sign up button */
-.jumbotron {
+nav {
+  background-color: #e0e0e0;
+}
+
+.search-filters .btn-large {
+  margin-top: 5px;
+}
+
+.profile-detail .card {
+  padding: 25px;
+}
+
+.profile-detail .profile-settings {
+  float: right;
+}
+
+.profile-settings a {
+  color: #42a5f5;
+  text-transform: initial;
+}
+
+.profile-detail .skills-section {
+  border-top: 2px solid #bdbdbd;
+  margin-top: 50px;
+}
+
+input.edit-name {
+  display: none;
+  width: 55%;
+}
+
+label.name-label {
+  font-size: 2.28rem;
+  color: #212121;
+}
+
+label.title-label {
+  font-size: 16px;
+  color: #212121;
+}
+
+input.edit-title {
+  display: none;
+  width: 55%;
+}
+
+input#search-bar {
+  margin-top: 20px;
+  width: 680px;
+  color: #212121;
+}
+
+.tt-query, /* UPDATE: newer versions use tt-input instead of tt-query */
+.tt-hint {
+  width: 396px;
+  height: 30px;
+  padding: 8px 12px;
+  font-size: 24px;
+  line-height: 30px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+}
+
+.tt-query {
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+  color: #999
+}
+
+.tt-dropdown-menu {
+  width: 422px;
+  margin-top: 12px;
+  padding: 8px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion {
+  padding: 3px 20px;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.tt-suggestion.tt-is-under-cursor {
+  color: #fff;
+  background-color: #0097cf;
+
+}
+
+.tt-suggestion p {
+  margin: 0;
+}
+
+ul.skill-types {
+  background-color: #eeeeee;
+  padding: 10px;
+}
+
+.main-content {
+  width: 90%;
+  margin: auto;
+}
+
+.card .card-title {
+  font-size: 20px;
+}
+
+#home-view .main-content {
+  margin-top: 100px;
+}
+
+#home-search a.btn-large {
+  margin-bottom: 0;
+  height: 65px;
+  margin-left: 5px;
+  vertical-align: top;
+}
+
+
+#home-search {
+  width: 75%;
+  margin: auto;
+}
+
+#home-search nav {
+  width: 80%;
+  display: inline-block;
+}
+
+.member-search {
+  margin-top: 0;
+}
+
+#home-search i {
+  font-size: 32px;
+  vertical-align: -webkit-baseline-middle;
+}
+
+.member-search .input-field {
+  padding-left: 20px;
+}
+
+h4.category-title {
   text-align: center;
-  border-bottom: 1px solid #e5e5e5;
-
-  .btn {
-    font-size: 21px;
-    padding: 14px 24px;
-  }
+  color: #bdbdbd;
+  font-weight: 300;
 }
 
-/* Supporting marketing content */
-.marketing {
-  margin: 40px 0;
-
-  p + h4 {
-    margin-top: 28px;
-  }
+.search-filters {
+  width: 75%;
+  margin: auto;
 }
 
-/* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
-  .container {
-    max-width: 730px;
-  }
+.search-filters p {
+  display: inline-block;
+}
 
-  /* Remove the padding we set earlier */
-  .header,
-  .marketing,
-  .footer {
-    padding-left: 0;
-    padding-right: 0;
-  }
-  /* Space out the masthead */
-  .header {
-    margin-bottom: 30px;
-  }
-  /* Remove the bottom border on the jumbotron for visual effect */
-  .jumbotron {
-    border-bottom: 0;
-  }
+.search-filters > p {
+  margin-right: 25px;
+}
+.search-filters label {
+  margin-right: 15px;
 }
