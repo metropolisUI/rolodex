@@ -17,12 +17,13 @@
   "dependencies": {
     "clean-css-brunch": "latest",
     "css-brunch": "latest",
+    "express": "^4.12.3",
     "handlebars-brunch": "latest",
     "javascript-brunch": "latest",
     "less-brunch": "latest",
+    "read-components": "latest",
     "sass-brunch": "latest",
-    "uglify-js-brunch": "latest",
-    "read-components": "latest"
+    "uglify-js-brunch": "latest"
   },
   "devDependencies": {
     "expect.js": "latest"
