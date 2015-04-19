@@ -1,18 +1,18 @@
 {
   "author": "Your Name",
   "name": "package-name",
-  "description": "Package description",
+  "description": "basic member application",
   "version": "0.0.1",
-  "homepage": "",
+  "main": "server.js",
   "repository": {
     "type": "git",
     "url": ""
   },
   "engines": {
-    "node": "latest"
+    "node": "0.10.35"
   },
   "scripts": {
-    "start": "brunch watch --server"
+    "start": "node server.js"
   },
   "dependencies": {
     "clean-css-brunch": "latest",
