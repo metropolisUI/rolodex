@@ -1,18 +1,33 @@
 Members Directory
 =========
 
-A basic application for managing members, re-built in a few of the more popular front-end frameworks/ libraries.
-The goal is for this to be as modular and agnostic as possible so that it can be included as a feature into other applications.
+_A simple application for looking up members by skill type and/or job role._
 
-## Project Team
-* Chad Drummond ([@chadwithuhc](https://github.com/chadwithuhc))
-* Trenton Kennedy ([@trentontri](https://github.com/trentontri))
+## Installation
+Clone down the repo to local and follow the install steps below.
 
 ## Getting started
 
-Each re-write of the members-directory in different frameworks are independent of the others so to use a particular version clone this repo and extract the one you need.
-The app will need to have a database in order to store new users _but it doesn't care which backend you use._ 
+* Install (if you don't have them):
+    * [Node.js](http://nodejs.org): `brew install node` on OS X
+    * [Brunch](http://brunch.io): `npm install -g brunch`
+    * [Bower](http://bower.io): `npm install -g bower`
+    * Brunch plugins and Bower dependencies: `npm install & bower install`.
+* Setup:
+    * _We use [Parse.com](http://parse.com) for our backend so you will need to create a new application and install keys_
+    * Create a file at `app/lib/parseInit.js` and add the following code with your Parse.com application keys:
+    ```js
+    Parse.initialize("YOUR_APP_ID", "YOUR_JAVASCRIPT_KEY");
 
+    module.exports = Parse;
+    ```
+* Run:
+    * `brunch watch -s` — watches the project with continuous rebuild. This will also launch HTTP server with [pushState](https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history).
+    * `brunch build --production` — builds minified project for production
+* Learn:
+    * `public/` dir is fully auto-generated and served by HTTP server.  Write your code in `app/` dir.
+    * Place static files you want to be copied from `app/assets/` to `public/`.
+    * [Brunch site](http://brunch.io), [Backbone site](http://backbonejs.org/)
 
 
 ## Contributing
@@ -26,3 +41,10 @@ There are many ways you can contribute to the project:
 - Write unit tests.
 - Translate Project into other languages (and help keep those translations up to date).
 - Write documentation and help keep it up to date (please see wiki for examples).
+
+## Testing
+Running `grunt test` will run the unit tests.
+
+## Project Team
+* Chad Drummond ([@chadwithuhc](https://github.com/chadwithuhc))
+* Trenton Kennedy ([@trentontri](https://github.com/trentontri))
