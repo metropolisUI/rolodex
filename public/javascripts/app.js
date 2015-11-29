@@ -1,23 +1,40 @@
-(function(/*! Brunch !*/) {
+(function() {
   'use strict';
 
-  var globals = typeof window !== 'undefined' ? window : global;
+  var globals = typeof window === 'undefined' ? global : window;
   if (typeof globals.require === 'function') return;
 
   var modules = {};
   var cache = {};
+  var aliases = {};
+  var has = ({}).hasOwnProperty;
 
-  var has = function(object, name) {
-    return ({}).hasOwnProperty.call(object, name);
+  var endsWith = function(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
   };
 
-  var expand = function(root, name) {
-    var results = [], parts, part;
-    if (/^\.\.?(\/|$)/.test(name)) {
-      parts = [root, name].join('/').split('/');
-    } else {
-      parts = name.split('/');
+  var _cmp = 'components/';
+  var unalias = function(alias, loaderPath) {
+    var start = 0;
+    if (loaderPath) {
+      if (loaderPath.indexOf(_cmp) === 0) {
+        start = _cmp.length;
+      }
+      if (loaderPath.indexOf('/', start) > 0) {
+        loaderPath = loaderPath.substring(start, loaderPath.indexOf('/', start));
+      }
     }
+    var result = aliases[alias + '/index.js'] || aliases[loaderPath + '/deps/' + alias + '/index.js'];
+    if (result) {
+      return _cmp + result.substring(0, result.length - '.js'.length);
+    }
+    return alias;
+  };
+
+  var _reg = /^\.\.?(\/|$)/;
+  var expand = function(root, name) {
+    var results = [], part;
+    var parts = (_reg.test(name) ? root + '/' + name : name).split('/');
     for (var i = 0, length = parts.length; i < length; i++) {
       part = parts[i];
       if (part === '..') {
@@ -34,9 +51,8 @@
   };
 
   var localRequire = function(path) {
-    return function(name) {
-      var dir = dirname(path);
-      var absolute = expand(dir, name);
+    return function expanded(name) {
+      var absolute = expand(dirname(path), name);
       return globals.require(absolute, path);
     };
   };
@@ -51,21 +67,26 @@
   var require = function(name, loaderPath) {
     var path = expand(name, '.');
     if (loaderPath == null) loaderPath = '/';
+    path = unalias(name, loaderPath);
 
-    if (has(cache, path)) return cache[path].exports;
-    if (has(modules, path)) return initModule(path, modules[path]);
+    if (has.call(cache, path)) return cache[path].exports;
+    if (has.call(modules, path)) return initModule(path, modules[path]);
 
     var dirIndex = expand(path, './index');
-    if (has(cache, dirIndex)) return cache[dirIndex].exports;
-    if (has(modules, dirIndex)) return initModule(dirIndex, modules[dirIndex]);
+    if (has.call(cache, dirIndex)) return cache[dirIndex].exports;
+    if (has.call(modules, dirIndex)) return initModule(dirIndex, modules[dirIndex]);
 
     throw new Error('Cannot find module "' + name + '" from '+ '"' + loaderPath + '"');
   };
 
-  var define = function(bundle, fn) {
+  require.alias = function(from, to) {
+    aliases[to] = from;
+  };
+
+  require.register = require.define = function(bundle, fn) {
     if (typeof bundle === 'object') {
       for (var key in bundle) {
-        if (has(bundle, key)) {
+        if (has.call(bundle, key)) {
           modules[key] = bundle[key];
         }
       }
@@ -74,21 +95,19 @@
     }
   };
 
-  var list = function() {
+  require.list = function() {
     var result = [];
     for (var item in modules) {
-      if (has(modules, item)) {
+      if (has.call(modules, item)) {
         result.push(item);
       }
     }
     return result;
   };
 
+  require.brunch = true;
+  require._cache = cache;
   globals.require = require;
-  globals.require.define = define;
-  globals.require.register = define;
-  globals.require.list = list;
-  globals.require.brunch = true;
 })();
 require.register("application", function(exports, require, module) {
 require('lib/parseInit');
@@ -116,12 +135,6 @@ $(function () {
   Backbone.history.start();
 });
 
-});
-
-require.register("lib/parseInit", function(exports, require, module) {
-Parse.initialize("uTAI2TS4OQWE6Ab90co1oyXO4kbRTvfhfgXLMf1U", "h9z9rmRrmlA47mE66lY33xvGk0f3ooPLrNKEozp5");
-
-module.exports = Parse;
 });
 
 require.register("lib/viewHelper", function(exports, require, module) {
@@ -792,40 +805,38 @@ module.exports = View.extend({
 });
 
 require.register("views/templates/home", function(exports, require, module) {
-var __templateData = Handlebars.template({"1":function(depth0,helpers,partials,data) {
-  var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, lambda=this.lambda;
+var __templateData = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var alias1=container.escapeExpression, alias2=container.lambda;
+
   return "                    <li class=\"collection-item avatar\">\n                        <img src=\""
-    + escapeExpression(((helpers.gravatarUrl || (depth0 && depth0.gravatarUrl) || helperMissing).call(depth0, (depth0 != null ? depth0.email : depth0), "200", {"name":"gravatarUrl","hash":{},"data":data})))
+    + alias1((helpers.gravatarUrl || (depth0 && depth0.gravatarUrl) || helpers.helperMissing).call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.email : depth0),"200",{"name":"gravatarUrl","hash":{},"data":data}))
     + "\" alt=\"\" class=\"circle\">\n                        <span class=\"title\"> "
-    + escapeExpression(lambda((depth0 != null ? depth0.name : depth0), depth0))
+    + alias1(alias2((depth0 != null ? depth0.name : depth0), depth0))
     + "</span>\n\n                        <p>"
-    + escapeExpression(lambda((depth0 != null ? depth0.jobTitle : depth0), depth0))
+    + alias1(alias2((depth0 != null ? depth0.jobTitle : depth0), depth0))
     + "</p>\n                        <a href=\"#profile/"
-    + escapeExpression(lambda((depth0 != null ? depth0.objectId : depth0), depth0))
+    + alias1(alias2((depth0 != null ? depth0.objectId : depth0), depth0))
     + "\" class=\"secondary-content\">profile</a>\n                    </li>\n";
-},"3":function(depth0,helpers,partials,data) {
-  return "                    <h2>No Results, bro!</h2>\n";
-  },"5":function(depth0,helpers,partials,data) {
-  var lambda=this.lambda, escapeExpression=this.escapeExpression;
-  return "                    <li class=\"collection-item\">\n                        <span class=\"title\"> "
-    + escapeExpression(lambda((depth0 != null ? depth0.name : depth0), depth0))
+},"3":function(container,depth0,helpers,partials,data) {
+    return "                    <h2>No Results, bro!</h2>\n";
+},"5":function(container,depth0,helpers,partials,data) {
+    return "                    <li class=\"collection-item\">\n                        <span class=\"title\"> "
+    + container.escapeExpression(container.lambda((depth0 != null ? depth0.name : depth0), depth0))
     + "</span>\n                    </li>\n";
-},"7":function(depth0,helpers,partials,data) {
-  var lambda=this.lambda, escapeExpression=this.escapeExpression;
-  return "                    <li class=\"collection-item\">\n                        <span class=\"title\"> "
-    + escapeExpression(lambda((depth0 != null ? depth0.jobTitle : depth0), depth0))
+},"7":function(container,depth0,helpers,partials,data) {
+    return "                    <li class=\"collection-item\">\n                        <span class=\"title\"> "
+    + container.escapeExpression(container.lambda((depth0 != null ? depth0.jobTitle : depth0), depth0))
     + "</span>\n                    </li>\n";
-},"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  var stack1, buffer = "<div class=\"main-content\">\n    <div class=\"row\">\n\n        <div id=\"home-search\">\n            <nav class=\"member-search\">\n                <div class=\"input-field\">\n                    <input class=\"typeahead\" id=\"search-bar\" type=\"text\"\n                           placeholder=\"Search by name, job title, or skill...\">\n                </div>\n            </nav>\n            <a class=\"waves-effect waves-light btn-large\"><i class=\"mdi-action-search\"></i></a>\n        </div>\n        <div class=\"search-filters\">\n            <p>filters results:</p>\n            <p>\n                <input type=\"checkbox\" id=\"checkMembers\" checked=\"checked\"/>\n                <label for=\"checkMembers\">members</label>\n            </p>\n            <p>\n                <input type=\"checkbox\" id=\"checkSkills\" checked=\"checked\" />\n                <label for=\"checkSkills\">skills</label>\n            </p>\n            <p>\n                <input type=\"checkbox\" id=\"checkRoles\" checked=\"checked\"/>\n                <label for=\"checkRoles\">roles</label>\n            </p>\n        </div>\n\n    </div>\n    <div class=\"row\">\n        <div class=\"col m4\">\n            <h4 class=\"category-title\">members</h4>\n            <ul class=\"collection\" id=\"member-results\">\n";
-  stack1 = helpers.each.call(depth0, (depth0 != null ? depth0.users : depth0), {"name":"each","hash":{},"fn":this.program(1, data),"inverse":this.program(3, data),"data":data});
-  if (stack1 != null) { buffer += stack1; }
-  buffer += "            </ul>\n        </div>\n        <div class=\"col m4\">\n            <h4 class=\"category-title\">skills</h4>\n            <ul class=\"collection\" id=\"skill-results\">\n";
-  stack1 = helpers.each.call(depth0, (depth0 != null ? depth0.topics : depth0), {"name":"each","hash":{},"fn":this.program(5, data),"inverse":this.noop,"data":data});
-  if (stack1 != null) { buffer += stack1; }
-  buffer += "            </ul>\n        </div>\n\n        <div class=\"col m4\">\n            <h4 class=\"category-title\">roles</h4>\n            <ul class=\"collection\" id=\"role-results\">\n";
-  stack1 = helpers.each.call(depth0, (depth0 != null ? depth0.users : depth0), {"name":"each","hash":{},"fn":this.program(7, data),"inverse":this.noop,"data":data});
-  if (stack1 != null) { buffer += stack1; }
-  return buffer + "            </ul>\n        </div>\n\n    </div>\n</div>";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {};
+
+  return "<div class=\"main-content\">\n    <div class=\"row\">\n\n        <div id=\"home-search\">\n            <nav class=\"member-search\">\n                <div class=\"input-field\">\n                    <input class=\"typeahead\" id=\"search-bar\" type=\"text\"\n                           placeholder=\"Search by name, job title, or skill...\">\n                </div>\n            </nav>\n            <a class=\"waves-effect waves-light btn-large\"><i class=\"mdi-action-search\"></i></a>\n        </div>\n        <div class=\"search-filters\">\n            <p>filters results:</p>\n            <p>\n                <input type=\"checkbox\" id=\"checkMembers\" checked=\"checked\"/>\n                <label for=\"checkMembers\">members</label>\n            </p>\n            <p>\n                <input type=\"checkbox\" id=\"checkSkills\" checked=\"checked\" />\n                <label for=\"checkSkills\">skills</label>\n            </p>\n            <p>\n                <input type=\"checkbox\" id=\"checkRoles\" checked=\"checked\"/>\n                <label for=\"checkRoles\">roles</label>\n            </p>\n        </div>\n\n    </div>\n    <div class=\"row\">\n        <div class=\"col m4\">\n            <h4 class=\"category-title\">members</h4>\n            <ul class=\"collection\" id=\"member-results\">\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.users : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
+    + "            </ul>\n        </div>\n        <div class=\"col m4\">\n            <h4 class=\"category-title\">skills</h4>\n            <ul class=\"collection\" id=\"skill-results\">\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.topics : depth0),{"name":"each","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "            </ul>\n        </div>\n\n        <div class=\"col m4\">\n            <h4 class=\"category-title\">roles</h4>\n            <ul class=\"collection\" id=\"role-results\">\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.users : depth0),{"name":"each","hash":{},"fn":container.program(7, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "            </ul>\n        </div>\n\n    </div>\n</div>";
 },"useData":true});
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -839,9 +850,9 @@ if (typeof define === 'function' && define.amd) {
 });
 
 ;require.register("views/templates/login", function(exports, require, module) {
-var __templateData = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  return "<header>\n	<div class=\"container\">\n		<h3>Login</h3>\n	</div>\n</header>\n\n<div class=\"container\">\n\n  <div class=\"row\">\n    <form class=\"col s12\">\n      <div class=\"row\">\n        <div class=\"input-field col s6\">\n          <input id=\"email\" type=\"text\" class=\"validate\">\n          <label for=\"email\">Email</label>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"input-field col s6\">\n          <input id=\"password\" type=\"password\" class=\"validate\">\n          <label for=\"password\">Password</label>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"input-field col s6\">\n           <button class=\"btn waves-effect waves-light\" type=\"submit\" name=\"action\">Login</button>\n        </div>\n      </div>\n    </form>\n  </div>\n\n  <a href=\"#register\">Want to Register?</a>\n	\n</div>\n";
-  },"useData":true});
+var __templateData = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<header>\n	<div class=\"container\">\n		<h3>Login</h3>\n	</div>\n</header>\n\n<div class=\"container\">\n\n  <div class=\"row\">\n    <form class=\"col s12\">\n      <div class=\"row\">\n        <div class=\"input-field col s6\">\n          <input id=\"email\" type=\"text\" class=\"validate\">\n          <label for=\"email\">Email</label>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"input-field col s6\">\n          <input id=\"password\" type=\"password\" class=\"validate\">\n          <label for=\"password\">Password</label>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"input-field col s6\">\n           <button class=\"btn waves-effect waves-light\" type=\"submit\" name=\"action\">Login</button>\n        </div>\n      </div>\n    </form>\n  </div>\n\n  <a href=\"#register\">Want to Register?</a>\n	\n</div>\n";
+},"useData":true});
 if (typeof define === 'function' && define.amd) {
   define([], function() {
     return __templateData;
@@ -854,27 +865,28 @@ if (typeof define === 'function' && define.amd) {
 });
 
 ;require.register("views/templates/nav", function(exports, require, module) {
-var __templateData = Handlebars.template({"1":function(depth0,helpers,partials,data) {
-  return "        <li><a href=\"#topic\">Topics</a></li>\n        <li><a href=\"#skills\">Skills</a></li>\n";
-  },"3":function(depth0,helpers,partials,data) {
-  return "        <li><a href=\"#register\">Register</a></li>\n";
-  },"5":function(depth0,helpers,partials,data) {
-  var stack1, lambda=this.lambda, escapeExpression=this.escapeExpression;
+var __templateData = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    return "        <li><a href=\"#topic\">Topics</a></li>\n        <li><a href=\"#skills\">Skills</a></li>\n";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "        <li><a href=\"#register\">Register</a></li>\n";
+},"5":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
+
   return "        <li><a href=\"#profile/"
-    + escapeExpression(lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.objectId : stack1), depth0))
+    + alias2(alias1(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.objectId : stack1), depth0))
     + "\" class=\"blue lighten-2\">Logged in as: "
-    + escapeExpression(lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.name : stack1), depth0))
+    + alias2(alias1(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.name : stack1), depth0))
     + "</a></li>\n        <li><a href=\"#logout\" class=\"red lighten-1\">Logout</a></li>\n";
-},"7":function(depth0,helpers,partials,data) {
-  return "        <li><a href=\"#login\">Login</a></li>\n";
-  },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  var stack1, buffer = "<nav>\n  <div class=\"nav-wrapper blue-grey darken-1\">\n    <a href=\"#\" class=\"brand-logo center\">Members Directory</a>\n    <ul id=\"nav-mobile\" class=\"left\">\n";
-  stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.user : depth0), {"name":"if","hash":{},"fn":this.program(1, data),"inverse":this.program(3, data),"data":data});
-  if (stack1 != null) { buffer += stack1; }
-  buffer += "    </ul>\n    <ul id=\"nav-mobile\" class=\"right\">\n";
-  stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.user : depth0), {"name":"if","hash":{},"fn":this.program(5, data),"inverse":this.program(7, data),"data":data});
-  if (stack1 != null) { buffer += stack1; }
-  return buffer + "    </ul>\n  </div>\n</nav>\n";
+},"7":function(container,depth0,helpers,partials,data) {
+    return "        <li><a href=\"#login\">Login</a></li>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {};
+
+  return "<nav>\n  <div class=\"nav-wrapper blue-grey darken-1\">\n    <a href=\"#\" class=\"brand-logo center\">Members Directory</a>\n    <ul id=\"nav-mobile\" class=\"left\">\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.user : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
+    + "    </ul>\n    <ul id=\"nav-mobile\" class=\"right\">\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.user : depth0),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.program(7, data, 0),"data":data})) != null ? stack1 : "")
+    + "    </ul>\n  </div>\n</nav>\n";
 },"useData":true});
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -888,18 +900,19 @@ if (typeof define === 'function' && define.amd) {
 });
 
 ;require.register("views/templates/partials/member", function(exports, require, module) {
-var __templateData = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  var helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, lambda=this.lambda;
+var __templateData = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var alias1=container.escapeExpression, alias2=container.lambda;
+
   return "<div id=\"member-partial\">\n    <div class=\"card\">\n        <div class=\"card-image waves-effect waves-block waves-light\">\n            <img class=\"activator\" src=\""
-    + escapeExpression(((helpers.gravatarUrl || (depth0 && depth0.gravatarUrl) || helperMissing).call(depth0, (depth0 != null ? depth0.email : depth0), "200", {"name":"gravatarUrl","hash":{},"data":data})))
+    + alias1((helpers.gravatarUrl || (depth0 && depth0.gravatarUrl) || helpers.helperMissing).call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.email : depth0),"200",{"name":"gravatarUrl","hash":{},"data":data}))
     + "\">\n        </div>\n\n        <div class=\"card-content\">\n                    <span class=\"card-title activator grey-text text-darken-4\">\n                        "
-    + escapeExpression(lambda((depth0 != null ? depth0.name : depth0), depth0))
+    + alias1(alias2((depth0 != null ? depth0.name : depth0), depth0))
     + " <i class=\"mdi-navigation-more-vert right\"></i>\n                    </span>\n            <p>"
-    + escapeExpression(lambda((depth0 != null ? depth0.jobTitle : depth0), depth0))
+    + alias1(alias2((depth0 != null ? depth0.jobTitle : depth0), depth0))
     + "</p>\n        </div>\n\n        <div class=\"card-reveal\">\n                    <span class=\"card-title grey-text text-darken-4\">\n                        "
-    + escapeExpression(lambda((depth0 != null ? depth0.name : depth0), depth0))
+    + alias1(alias2((depth0 != null ? depth0.name : depth0), depth0))
     + " <i class=\"mdi-navigation-close right\"></i>\n                    </span>\n            <p>[[ list of users skills ]]</p>\n            <a href=\"#profile/"
-    + escapeExpression(lambda((depth0 != null ? depth0.objectId : depth0), depth0))
+    + alias1(alias2((depth0 != null ? depth0.objectId : depth0), depth0))
     + "\">user profile</a>\n        </div>\n    </div>\n</div>\n";
 },"useData":true});
 if (typeof define === 'function' && define.amd) {
@@ -914,45 +927,44 @@ if (typeof define === 'function' && define.amd) {
 });
 
 ;require.register("views/templates/profile", function(exports, require, module) {
-var __templateData = Handlebars.template({"1":function(depth0,helpers,partials,data) {
-  var stack1, helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, lambda=this.lambda, buffer = "<div class=\"container profile-detail\">\n    <div class=\"card\">\n        <div class=\"row\">\n            <div class=\"col s3\">\n                <img src=\""
-    + escapeExpression(((helpers.gravatarUrl || (depth0 && depth0.gravatarUrl) || helperMissing).call(depth0, ((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.email : stack1), "200", {"name":"gravatarUrl","hash":{},"data":data})))
-    + "\"/>\n            </div>\n            <div class=\"col s8\">\n";
-  stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.isOwner : depth0), {"name":"if","hash":{},"fn":this.program(2, data),"inverse":this.noop,"data":data});
-  if (stack1 != null) { buffer += stack1; }
-  buffer += "                <h4>\n                    <i class=\"mdi-action-perm-identity\"></i>\n                    <input class=\"edit-name\" type=\"text\" placeholder=\""
-    + escapeExpression(lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.name : stack1), depth0))
+var __templateData = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {}, alias2=container.escapeExpression, alias3=container.lambda;
+
+  return "<div class=\"container profile-detail\">\n    <div class=\"card\">\n        <div class=\"row\">\n            <div class=\"col s3\">\n                <img src=\""
+    + alias2((helpers.gravatarUrl || (depth0 && depth0.gravatarUrl) || helpers.helperMissing).call(alias1,((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.email : stack1),"200",{"name":"gravatarUrl","hash":{},"data":data}))
+    + "\"/>\n            </div>\n            <div class=\"col s8\">\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.isOwner : depth0),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "                <h4>\n                    <i class=\"mdi-action-perm-identity\"></i>\n                    <input class=\"edit-name\" type=\"text\" placeholder=\""
+    + alias2(alias3(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.name : stack1), depth0))
     + "\"/>\n                    <label class=\"name-label\">  "
-    + escapeExpression(lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.name : stack1), depth0))
+    + alias2(alias3(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.name : stack1), depth0))
     + " </label>\n                </h4>\n\n                <p><i class=\"mdi-communication-email\"></i> "
-    + escapeExpression(lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.email : stack1), depth0))
+    + alias2(alias3(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.email : stack1), depth0))
     + "</p>\n\n                <p>\n                    <i class=\"mdi-action-star-rate\"></i>\n                    <input class=\"edit-title\" type=\"text\" placeholder=\""
-    + escapeExpression(lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.jobTitle : stack1), depth0))
+    + alias2(alias3(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.jobTitle : stack1), depth0))
     + "\"/>\n                    <label class=\"title-label\">"
-    + escapeExpression(lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.jobTitle : stack1), depth0))
-    + " </label>\n                </p>\n            </div>\n        </div>\n\n        <div class=\"row\">\n            <section class=\"skills-section\">\n              <h4>Member Skills ";
-  stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.isOwner : depth0), {"name":"if","hash":{},"fn":this.program(4, data),"inverse":this.noop,"data":data});
-  if (stack1 != null) { buffer += stack1; }
-  buffer += "</h4>\n              <ul>\n";
-  stack1 = helpers.each.call(depth0, (depth0 != null ? depth0.skills : depth0), {"name":"each","hash":{},"fn":this.program(6, data),"inverse":this.noop,"data":data});
-  if (stack1 != null) { buffer += stack1; }
-  return buffer + "              </ul>\n            </section>\n        </div>\n    </div>\n</div>\n";
-},"2":function(depth0,helpers,partials,data) {
-  return "                <p class=\"profile-settings\">\n                    <a class=\"edit-profile\" href=\"#\"><i class=\"mdi-image-edit\"></i>edit profile</a>\n                </p>\n";
-  },"4":function(depth0,helpers,partials,data) {
-  return "<a class=\"btn-floating btn-small waves-effect waves-light red\" href=\"#/skills\"><i class=\"mdi-content-add\"></i></a>";
-  },"6":function(depth0,helpers,partials,data) {
-  var stack1, lambda=this.lambda, escapeExpression=this.escapeExpression;
+    + alias2(alias3(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.jobTitle : stack1), depth0))
+    + " </label>\n                </p>\n            </div>\n        </div>\n\n        <div class=\"row\">\n            <section class=\"skills-section\">\n              <h4>Member Skills "
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.isOwner : depth0),{"name":"if","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "</h4>\n              <ul>\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.skills : depth0),{"name":"each","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "              </ul>\n            </section>\n        </div>\n    </div>\n</div>\n";
+},"2":function(container,depth0,helpers,partials,data) {
+    return "                <p class=\"profile-settings\">\n                    <a class=\"edit-profile\" href=\"#\"><i class=\"mdi-image-edit\"></i>edit profile</a>\n                </p>\n";
+},"4":function(container,depth0,helpers,partials,data) {
+    return "<a class=\"btn-floating btn-small waves-effect waves-light red\" href=\"#/skills\"><i class=\"mdi-content-add\"></i></a>";
+},"6":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
+
   return "                <li>"
-    + escapeExpression(lambda(((stack1 = (depth0 != null ? depth0.topic : depth0)) != null ? stack1.name : stack1), depth0))
+    + alias2(alias1(((stack1 = (depth0 != null ? depth0.topic : depth0)) != null ? stack1.name : stack1), depth0))
     + " ("
-    + escapeExpression(lambda(((stack1 = (depth0 != null ? depth0.competency : depth0)) != null ? stack1.name : stack1), depth0))
+    + alias2(alias1(((stack1 = (depth0 != null ? depth0.competency : depth0)) != null ? stack1.name : stack1), depth0))
     + ")</li>\n";
-},"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  var stack1, buffer = "";
-  stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.user : depth0), {"name":"if","hash":{},"fn":this.program(1, data),"inverse":this.noop,"data":data});
-  if (stack1 != null) { buffer += stack1; }
-  return buffer;
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.user : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
 },"useData":true});
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -966,16 +978,18 @@ if (typeof define === 'function' && define.amd) {
 });
 
 ;require.register("views/templates/signup", function(exports, require, module) {
-var __templateData = Handlebars.template({"1":function(depth0,helpers,partials,data) {
-  var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+var __templateData = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var helper;
+
   return "    <p class=\"card-panel teal lighten-4\">"
-    + escapeExpression(((helper = (helper = helpers.alert || (depth0 != null ? depth0.alert : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"alert","hash":{},"data":data}) : helper)))
+    + container.escapeExpression(((helper = (helper = helpers.alert || (depth0 != null ? depth0.alert : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"alert","hash":{},"data":data}) : helper)))
     + "</p>\n";
-},"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  var stack1, buffer = "<header>\n	<div class=\"container\">\n		<h3>Add Member</h3>\n	</div>\n</header>\n\n<div class=\"container\">\n\n";
-  stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.alert : depth0), {"name":"if","hash":{},"fn":this.program(1, data),"inverse":this.noop,"data":data});
-  if (stack1 != null) { buffer += stack1; }
-  return buffer + "\n  <div class=\"row\">\n    <form class=\"col s12\">\n      <div class=\"row\">\n        <div class=\"input-field col s6\">\n          <input id=\"email\" type=\"text\" class=\"validate\">\n          <label for=\"email\">Email</label>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"input-field col s6\">\n          <input id=\"password\" type=\"password\" class=\"validate\">\n          <label for=\"password\">Password</label>\n        </div>\n      </div>\n\n      <div class=\"row\">\n        <div class=\"input-field col s6\">\n          <input id=\"name\" type=\"text\" class=\"validate\">\n          <label for=\"name\">Name</label>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"input-field col s6\">\n          <input id=\"jobTitle\" type=\"text\" class=\"validate\">\n          <label for=\"jobTitle\">Job Title</label>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"input-field col s6\">\n           <button class=\"btn waves-effect waves-light\" type=\"submit\" name=\"action\">Create Account</button>\n        </div>\n      </div>\n    </form>\n  </div>\n	\n</div>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<header>\n	<div class=\"container\">\n		<h3>Add Member</h3>\n	</div>\n</header>\n\n<div class=\"container\">\n\n"
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.alert : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\n  <div class=\"row\">\n    <form class=\"col s12\">\n      <div class=\"row\">\n        <div class=\"input-field col s6\">\n          <input id=\"email\" type=\"text\" class=\"validate\">\n          <label for=\"email\">Email</label>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"input-field col s6\">\n          <input id=\"password\" type=\"password\" class=\"validate\">\n          <label for=\"password\">Password</label>\n        </div>\n      </div>\n\n      <div class=\"row\">\n        <div class=\"input-field col s6\">\n          <input id=\"name\" type=\"text\" class=\"validate\">\n          <label for=\"name\">Name</label>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"input-field col s6\">\n          <input id=\"jobTitle\" type=\"text\" class=\"validate\">\n          <label for=\"jobTitle\">Job Title</label>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"input-field col s6\">\n           <button class=\"btn waves-effect waves-light\" type=\"submit\" name=\"action\">Create Account</button>\n        </div>\n      </div>\n    </form>\n  </div>\n	\n</div>\n";
 },"useData":true});
 if (typeof define === 'function' && define.amd) {
   define([], function() {
@@ -989,37 +1003,39 @@ if (typeof define === 'function' && define.amd) {
 });
 
 ;require.register("views/templates/skills", function(exports, require, module) {
-var __templateData = Handlebars.template({"1":function(depth0,helpers,partials,data) {
-  var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+var __templateData = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var helper;
+
   return "    <p class=\"card-panel teal lighten-4\">"
-    + escapeExpression(((helper = (helper = helpers.alert || (depth0 != null ? depth0.alert : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"alert","hash":{},"data":data}) : helper)))
+    + container.escapeExpression(((helper = (helper = helpers.alert || (depth0 != null ? depth0.alert : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"alert","hash":{},"data":data}) : helper)))
     + "</p>\n";
-},"3":function(depth0,helpers,partials,data) {
-  var lambda=this.lambda, escapeExpression=this.escapeExpression;
+},"3":function(container,depth0,helpers,partials,data) {
+    var alias1=container.lambda, alias2=container.escapeExpression;
+
   return "            <option value=\""
-    + escapeExpression(lambda((depth0 != null ? depth0.objectId : depth0), depth0))
+    + alias2(alias1((depth0 != null ? depth0.objectId : depth0), depth0))
     + "\">"
-    + escapeExpression(lambda((depth0 != null ? depth0.name : depth0), depth0))
+    + alias2(alias1((depth0 != null ? depth0.name : depth0), depth0))
     + "</option>\n";
-},"5":function(depth0,helpers,partials,data) {
-  var lambda=this.lambda, escapeExpression=this.escapeExpression;
+},"5":function(container,depth0,helpers,partials,data) {
+    var alias1=container.lambda, alias2=container.escapeExpression;
+
   return "            <option value=\""
-    + escapeExpression(lambda((depth0 != null ? depth0.abbr : depth0), depth0))
+    + alias2(alias1((depth0 != null ? depth0.abbr : depth0), depth0))
     + "\">"
-    + escapeExpression(lambda((depth0 != null ? depth0.name : depth0), depth0))
+    + alias2(alias1((depth0 != null ? depth0.name : depth0), depth0))
     + "</option>\n";
-},"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  var stack1, lambda=this.lambda, escapeExpression=this.escapeExpression, buffer = "<header>\n	<div class=\"container\">\n		<h3>Add Skills <label>to your profile</label></h3>\n	</div>\n</header>\n\n<div class=\"container\">\n\n";
-  stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.alert : depth0), {"name":"if","hash":{},"fn":this.program(1, data),"inverse":this.noop,"data":data});
-  if (stack1 != null) { buffer += stack1; }
-  buffer += "\n  <div class=\"row\">\n    <form class=\"col s12\">\n      <div class=\"row\">\n        <div class=\"input-field col s6\">\n          <label for=\"topic\">Topic</label>\n          <select id=\"topic\" required>\n            <option value=\"\" disabled selected>Choose your option</option>\n";
-  stack1 = helpers.each.call(depth0, (depth0 != null ? depth0.topics : depth0), {"name":"each","hash":{},"fn":this.program(3, data),"inverse":this.noop,"data":data});
-  if (stack1 != null) { buffer += stack1; }
-  buffer += "          </select>\n        </div>\n        <div class=\"input-field col s6\">\n          <label for=\"competency\">Competency</label>\n          <select id=\"competency\" required>\n            <option value=\"\" disabled selected>Choose your competency</option>\n";
-  stack1 = helpers.each.call(depth0, (depth0 != null ? depth0.competencies : depth0), {"name":"each","hash":{},"fn":this.program(5, data),"inverse":this.noop,"data":data});
-  if (stack1 != null) { buffer += stack1; }
-  return buffer + "          </select>\n        </div>\n        <div class=\"input-field col s6\">\n           <button class=\"btn waves-effect waves-light\" type=\"submit\" name=\"action\">Submit\n            <i class=\"mdi-content-send right\"></i>\n          </button>\n        </div>\n      </div>\n    </form>\n  </div>\n\n  <div class=\"buttons\">\n    <a class=\"waves-effect waves-light btn\" href=\"#profile/"
-    + escapeExpression(lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.objectId : stack1), depth0))
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {};
+
+  return "<header>\n	<div class=\"container\">\n		<h3>Add Skills <label>to your profile</label></h3>\n	</div>\n</header>\n\n<div class=\"container\">\n\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.alert : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\n  <div class=\"row\">\n    <form class=\"col s12\">\n      <div class=\"row\">\n        <div class=\"input-field col s6\">\n          <label for=\"topic\">Topic</label>\n          <select id=\"topic\" required>\n            <option value=\"\" disabled selected>Choose your option</option>\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.topics : depth0),{"name":"each","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "          </select>\n        </div>\n        <div class=\"input-field col s6\">\n          <label for=\"competency\">Competency</label>\n          <select id=\"competency\" required>\n            <option value=\"\" disabled selected>Choose your competency</option>\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.competencies : depth0),{"name":"each","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "          </select>\n        </div>\n        <div class=\"input-field col s6\">\n           <button class=\"btn waves-effect waves-light\" type=\"submit\" name=\"action\">Submit\n            <i class=\"mdi-content-send right\"></i>\n          </button>\n        </div>\n      </div>\n    </form>\n  </div>\n\n  <div class=\"buttons\">\n    <a class=\"waves-effect waves-light btn\" href=\"#profile/"
+    + container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? depth0.user : depth0)) != null ? stack1.objectId : stack1), depth0))
     + "\">Back to Profile</a>\n  </div>\n	\n</div>\n";
 },"useData":true});
 if (typeof define === 'function' && define.amd) {
@@ -1034,16 +1050,18 @@ if (typeof define === 'function' && define.amd) {
 });
 
 ;require.register("views/templates/topic", function(exports, require, module) {
-var __templateData = Handlebars.template({"1":function(depth0,helpers,partials,data) {
-  var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
+var __templateData = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var helper;
+
   return "    <p class=\"card-panel teal lighten-4\">"
-    + escapeExpression(((helper = (helper = helpers.alert || (depth0 != null ? depth0.alert : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"alert","hash":{},"data":data}) : helper)))
+    + container.escapeExpression(((helper = (helper = helpers.alert || (depth0 != null ? depth0.alert : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"alert","hash":{},"data":data}) : helper)))
     + "</p>\n";
-},"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  var stack1, buffer = "<header>\n	<div class=\"container\">\n		<h3>Add Topic <label>for all users</label></h3>\n	</div>\n</header>\n\n<div class=\"container\">\n\n";
-  stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.alert : depth0), {"name":"if","hash":{},"fn":this.program(1, data),"inverse":this.noop,"data":data});
-  if (stack1 != null) { buffer += stack1; }
-  return buffer + "\n  <div class=\"row\">\n    <form class=\"col s12\">\n      <div class=\"row\">\n        <div class=\"input-field col s6\">\n          <input id=\"topic\" type=\"text\" class=\"validate\">\n          <label for=\"topic\">Topic</label>\n        </div>\n        <div class=\"input-field col s6\">\n           <button class=\"btn waves-effect waves-light\" type=\"submit\" name=\"action\">Submit\n            <i class=\"mdi-content-send right\"></i>\n          </button>\n        </div>\n      </div>\n    </form>\n  </div>\n\n  <div class=\"buttons\">\n    <a class=\"waves-effect waves-light btn\" href=\"#\">Home</a>\n  </div>\n	\n</div>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<header>\n	<div class=\"container\">\n		<h3>Add Topic <label>for all users</label></h3>\n	</div>\n</header>\n\n<div class=\"container\">\n\n"
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.alert : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\n  <div class=\"row\">\n    <form class=\"col s12\">\n      <div class=\"row\">\n        <div class=\"input-field col s6\">\n          <input id=\"topic\" type=\"text\" class=\"validate\">\n          <label for=\"topic\">Topic</label>\n        </div>\n        <div class=\"input-field col s6\">\n           <button class=\"btn waves-effect waves-light\" type=\"submit\" name=\"action\">Submit\n            <i class=\"mdi-content-send right\"></i>\n          </button>\n        </div>\n      </div>\n    </form>\n  </div>\n\n  <div class=\"buttons\">\n    <a class=\"waves-effect waves-light btn\" href=\"#\">Home</a>\n  </div>\n	\n</div>\n";
 },"useData":true});
 if (typeof define === 'function' && define.amd) {
   define([], function() {
