@@ -1,16 +1,21 @@
-import React from 'react';
+import React, {Component, PropTypes} from 'react';
 import ReactDOM from 'react-dom';
+import SplashPage from './components/SplashPage';
 
 require('./scss/main.scss');
 
-var App = React.createClass({
-    render: function(){
-        return(
-            <h1>Hello World</h1>
+class App extends Component {
+    render() {
+        return (
+            <div>
+                <h1>Hello World</h1>
+                <SplashPage />
+            </div>
         )
     }
-});
+}
+
 ReactDOM.render(
-<App />,
+    <App />,
     document.getElementById('rolodex-app')
 );
