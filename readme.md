@@ -8,7 +8,7 @@ _A database of your personal network that allows you to search through lists of 
 - clone the repo
 - run `npm install` for installing all dependencies
 - run `webpack` to build the static assets after making changes.
-- open `dist/index.html` to preview changes.
+- run `webpack-dev-server` to preview changes.
 
 ## Dependencies
 Dependency    | Description
@@ -16,7 +16,8 @@ Dependency    | Description
 [NodeJS](nodejs.org)/ [npm](https://www.npmjs.com/)   | manages all development tooling
 [Webpack](http://webpack.github.io/docs/installation.htm)       | handles static builds
 [SASS](http://sass-lang.com/install)          | CSS pre-processor
-[ReactJS](https://facebook.github.io/react/) | JS framework for build view components
+[ReactJS](https://facebook.github.io/react/) | JS library for building view components
+[Redux](https://github.com/rackt/redux)   | predictable state container for React apps
 
 
 ## Project Team
