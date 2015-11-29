@@ -1,39 +1,34 @@
 var webpack = require('webpack');
 
-function getEntrySources(sources) {
-    if (process.env.NODE_ENV !== 'production') {
-        sources.push('webpack-dev-server/client?http://localhost:8080');
-        sources.push('webpack/hot/only-dev-server')
-    }
-    return sources;
-}
-
-function getOutputFilename(){
-    if (process.env.NODE_ENV === 'production') {
-        return './server/public/js/[name].js';
-    }
-
-    return '/js/[name].js';
-}
-
-var ignore = new webpack.IgnorePlugin(/\.svg$/);
-
 module.exports = {
-    devtool: 'source-map',
-    entry: {
-        main: getEntrySources([
-            './scripts/main.js'
-        ])
-    },
-    output: {
-        publicPath: 'http://localhost:8080',
-        filename: getOutputFilename
-    },
+    entry: [
+        'webpack-dev-server/client?http://localhost:8080',
+        'webpack/hot/only-dev-server',
+        './app/index.jsx'
+    ],
     module: {
         loaders: [
-            { test: /\.js$/, loaders: ['react-hot', 'babel'], exclude: /node_modules/},
+            {
+                test: /\.jsx?$/,
+                exclude: /node_modules/,
+                loader: 'react-hot!babel'
+            },
             {test: /\.scss$/, loaders: ['style', 'css', 'autoprefixer', 'sass']}
         ]
     },
-    plugins: [ignore]
+    resolve: {
+        extensions: ['', '.js', '.jsx']
+    },
+    output: {
+        path: __dirname + '/dist',
+        publicPath: '/',
+        filename: 'bundle.js'
+    },
+    devServer: {
+        contentBase: './dist',
+        hot: true
+    },
+    plugins: [
+        new webpack.HotModuleReplacementPlugin()
+    ]
 };
